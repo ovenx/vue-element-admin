@@ -137,8 +137,7 @@ export const asyncRoutes = [
     name: 'Permission',
     meta: {
       title: 'Permission',
-      icon: 'lock',
-      roles: ['admin', 'editor'] // you can set roles in root nav
+      icon: 'lock'
     },
     children: [
       {
@@ -197,14 +196,16 @@ export const asyncRoutes = [
     name: 'Example',
     meta: {
       title: 'Example',
-      icon: 'el-icon-s-help'
+      icon: 'el-icon-s-help',
+      auth: ['example:view']
     },
+    alwaysShow: true,
     children: [
       {
         path: 'create',
         component: () => import('@/views/example/create'),
         name: 'CreateArticle',
-        meta: { title: 'Create Article', icon: 'edit' }
+        meta: { title: 'Create Article', icon: 'edit', auth: ['example:add'] }
       },
       {
         path: 'edit/:id(\\d+)',
@@ -217,7 +218,7 @@ export const asyncRoutes = [
         path: 'list',
         component: () => import('@/views/example/list'),
         name: 'ArticleList',
-        meta: { title: 'Article List', icon: 'list' }
+        meta: { title: 'Article List', icon: 'list', auth: ['example:view'] }
       }
     ]
   },

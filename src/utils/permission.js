@@ -5,17 +5,25 @@ import store from '@/store'
  * @returns {Boolean}
  * @example see @/views/permission/directive.vue
  */
-export default function checkPermission(value) {
-  if (value && value instanceof Array && value.length > 0) {
-    const roles = store.getters && store.getters.roles
-    const permissionRoles = value
-
-    const hasPermission = roles.some(role => {
-      return permissionRoles.includes(role)
-    })
-    return hasPermission
+export default function checkAuth(value, checkAll) {
+  if (typeof checkAll === 'undefined') {
+    checkAll = false
+  }
+  const hasAuthorization = store.getters.hasAuthorization
+  if (typeof value === 'string') {
+    return hasAuthorization(value)
+  } else if (value && value instanceof Array && value.length > 0) {
+    if (checkAll) {
+      return value.every(auth => {
+        return hasAuthorization(auth)
+      })
+    } else {
+      return value.some(auth => {
+        return hasAuthorization(auth)
+      })
+    }
   } else {
-    console.error(`need roles! Like v-permission="['admin','editor']"`)
+    console.error(`need auths! Like v-auths="['admin','editor']"`)
     return false
   }
 }
